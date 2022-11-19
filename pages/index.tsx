@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react'
 
 async function createURL(fullURL: string) {
     try {
-        const res = await fetch('/api/createurl', {
+        const res = await fetch('/api/create-url', {
             method: 'POST',
             body: JSON.stringify({
                 url: fullURL,
