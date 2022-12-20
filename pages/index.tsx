@@ -9,7 +9,7 @@ async function createURL(fullURL: string) {
                 url: fullURL,
             }),
         })
-        if (res.statusText !== 'Created') return
+        if (res.status !== 201) return
         const url: URL = await res.json()
 
         //save to localstorage
@@ -44,7 +44,7 @@ export default function Home() {
 
     function onSubmitURL(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        let full_url = url
+        let full_url = encodeURI(url)
         //check url first
         //no space in full url
 
@@ -95,7 +95,10 @@ export default function Home() {
                             <li key={url.id}>
                                 <div>url: {url.to_url}</div>
                                 <div>
-                                    paths: <a href={window.location.href + url.id}>{window.location.href + url.id}</a>
+                                    paths:{' '}
+                                    <a href={window.location.href + url.id} target='_blank' rel='noopener noreferrer'>
+                                        {window.location.href + url.id}
+                                    </a>
                                 </div>
                             </li>
                         ))
