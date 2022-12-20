@@ -19,8 +19,10 @@ model URL {
 }
 
 model path {
-    id    Int    @id @unique @default(autoincrement())
-    path  String
-    URL   URL?   @relation(fields: [uRLId], references: [id])
-    uRLId Int?
+    id           Int      @id @unique @default(autoincrement())
+    path         String   @unique
+    URL          URL?     @relation(fields: [uRLId], references: [id])
+    uRLId        Int?
+    time_created DateTime @default(now())
+    updated_at   DateTime @updatedAt
 }
