@@ -14,5 +14,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         },
     })
 
-    res.status(201).json({ id: url.id })
+    res.status(201).json(url)
 }
