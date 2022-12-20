@@ -36,13 +36,25 @@ export default function Page({ url }: InferGetServerSidePropsType<typeof getServ
 }
 
 export const getServerSideProps: GetServerSideProps<{ url?: string }> = async context => {
-    const id = context.params?.path
-    if (!id || Array.isArray(id)) return { props: {} }
-    const url = await prisma.uRL.findUnique({ where: { id: parseInt(id) } })
-    if (!url) return { props: {} }
-    return {
-        props: {
-            url: url.to_url,
-        },
+    const path = context.params?.path
+    if (!path || Array.isArray(path)) return { props: {} }
+    if (!isNaN(parseInt(path))) {
+        //path is a url id
+        const url = await prisma.uRL.findUnique({ where: { id: parseInt(path) } })
+        if (!url) return { props: {} }
+        return {
+            props: {
+                url: url.to_url,
+            },
+        }
+    } else {
+        //path is a string from path table
+        const foundPath = await prisma.path.findUnique({ where: { path }, include: { URL: {} } })
+        if (!foundPath) return { props: {} }
+        return {
+            props: {
+                url: foundPath.URL?.to_url,
+            },
+        }
     }
 }
