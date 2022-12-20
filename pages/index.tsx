@@ -2,35 +2,33 @@ import { URL } from '@prisma/client'
 import { FormEvent, useEffect, useState } from 'react'
 
 async function createURL(fullURL: string) {
-    try {
-        const res = await fetch('/api/create-url', {
-            method: 'POST',
-            body: JSON.stringify({
-                url: fullURL,
-            }),
-        })
-        if (res.status !== 201) return
-        const url: URL = await res.json()
+    const res = await fetch('/api/create-url', {
+        method: 'POST',
+        body: JSON.stringify({
+            url: fullURL,
+        }),
+    })
+    if (res.status !== 201) throw new Error('something wrong with server response')
 
-        //save to localstorage
-        const urlsLocalstorage = localStorage.getItem('urls')
-        let urls: URL[] = []
-        if (urlsLocalstorage) {
-            urls = JSON.parse(urlsLocalstorage)
-            if (!Array.isArray(urls)) urls = []
-        }
-        localStorage.setItem('urls', JSON.stringify([...urls, url]))
+    const url: URL = await res.json()
 
-        return url
-    } catch {
-        console.log('error in fetch')
+    //save to localstorage
+    const urlsLocalstorage = localStorage.getItem('urls')
+    let urls: URL[] = []
+    if (urlsLocalstorage) {
+        urls = JSON.parse(urlsLocalstorage)
+        if (!Array.isArray(urls)) urls = []
     }
+    localStorage.setItem('urls', JSON.stringify([...urls, url]))
+
+    return url
 }
 
 export default function Home() {
     const [url, setUrl] = useState('')
     const [processing, setProcessing] = useState<string | null>(null)
-    const [urls, setUrls] = useState<URL[] | null>(null)
+    const [urls, setUrls] = useState<URL[]>([])
+    const [error, setError] = useState<string>()
 
     useEffect(() => {
         const urlsLocalstorage = window.localStorage.getItem('urls')
@@ -56,18 +54,18 @@ export default function Home() {
         setProcessing(full_url)
 
         //send data/url to create short url endpoint and receive short url it
-        createURL(full_url).then(url => {
-            if (!url) return
-            //clear input
-            setUrl('')
-            setProcessing(null)
-            //fix the urls state
-            setUrls(tUrls => {
-                if (!tUrls) return null
-                // tUrls.pop()
-                return [...tUrls, url]
+        createURL(full_url)
+            .then(url => {
+                //clear input
+                setUrl('')
+                setProcessing(null)
+                //fix the urls state
+                setUrls(tUrls => [...tUrls, url])
             })
-        })
+            .catch(err => {
+                setProcessing(null)
+                setError((err as Error).message)
+            })
     }
 
     return (
@@ -107,6 +105,7 @@ export default function Home() {
             </main>
 
             <footer>
+                <div>Something is wrong: {error}</div>
                 <div>
                     Created by{' '}
                     <a href='https://github.com/rrhul0' target='_blank' rel='noopener noreferrer'>
