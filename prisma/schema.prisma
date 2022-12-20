@@ -12,8 +12,15 @@ datasource db {
 
 model URL {
     id           Int      @id @unique @default(autoincrement())
-    path         String?
+    paths        path[]
     to_url       String
     time_created DateTime @default(now())
     updated_at   DateTime @updatedAt
+}
+
+model path {
+    id    Int    @id @unique @default(autoincrement())
+    path  String
+    URL   URL?   @relation(fields: [uRLId], references: [id])
+    uRLId Int?
 }
