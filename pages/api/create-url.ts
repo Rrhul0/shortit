@@ -12,6 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
             to_url: fullURL,
         },
+        include: { paths: {} },
     })
 
     res.status(201).json(url)

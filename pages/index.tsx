@@ -1,5 +1,10 @@
-import { URL } from '@prisma/client'
+import { path, URL } from '@prisma/client'
 import { FormEvent, useEffect, useState } from 'react'
+import ShowUrls from '../components/showUrls'
+
+export interface urlWithPaths extends URL {
+    paths: path[]
+}
 
 async function createURL(fullURL: string) {
     const res = await fetch('/api/create-url', {
@@ -10,11 +15,11 @@ async function createURL(fullURL: string) {
     })
     if (res.status !== 201) throw new Error('something wrong with server response')
 
-    const url: URL = await res.json()
+    const url: urlWithPaths = await res.json()
 
     //save to localstorage
     const urlsLocalstorage = localStorage.getItem('urls')
-    let urls: URL[] = []
+    let urls: urlWithPaths[] = []
     if (urlsLocalstorage) {
         urls = JSON.parse(urlsLocalstorage)
         if (!Array.isArray(urls)) urls = []
@@ -27,12 +32,12 @@ async function createURL(fullURL: string) {
 export default function Home() {
     const [url, setUrl] = useState('')
     const [processing, setProcessing] = useState<string | null>(null)
-    const [urls, setUrls] = useState<URL[]>([])
+    const [urls, setUrls] = useState<urlWithPaths[]>([])
     const [error, setError] = useState<string>()
 
     useEffect(() => {
         const urlsLocalstorage = window.localStorage.getItem('urls')
-        let urls: URL[] = []
+        let urls: urlWithPaths[] = []
         if (urlsLocalstorage) {
             urls = JSON.parse(urlsLocalstorage)
             if (!Array.isArray(urls)) urls = []
@@ -87,25 +92,16 @@ export default function Home() {
                         <div>Processing...</div>
                     </div>
                 ) : null}
-                <div>
-                    {urls
-                        ?.map(url => (
-                            <li key={url.id}>
-                                <div>url: {url.to_url}</div>
-                                <div>
-                                    paths:{' '}
-                                    <a href={window.location.href + url.id} target='_blank' rel='noopener noreferrer'>
-                                        {window.location.href + url.id}
-                                    </a>
-                                </div>
-                            </li>
-                        ))
-                        .reverse()}
-                </div>
+                <ol>
+                    {urls?.reverse().map(url => (
+                        <ShowUrls key={url.id} url={url} />
+                    ))}
+                </ol>
             </main>
 
             <footer>
-                <div>Something is wrong: {error}</div>
+                {error ? <div>Something is wrong: {error}</div> : null}
+
                 <div>
                     Created by{' '}
                     <a href='https://github.com/rrhul0' target='_blank' rel='noopener noreferrer'>
