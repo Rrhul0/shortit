@@ -63,14 +63,13 @@ export default function Home() {
             .then(url => {
                 //clear input
                 setUrl('')
-                setProcessing(null)
                 //fix the urls state
                 setUrls(tUrls => [...tUrls, url])
             })
             .catch(err => {
-                setProcessing(null)
                 setError((err as Error).message)
             })
+            .finally(() => setProcessing(null))
     }
 
     return (

@@ -1,13 +1,27 @@
 import { path, URL } from '@prisma/client'
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
 
-export default function AddPath({ url, setPaths }: { url: URL; setPaths: Dispatch<SetStateAction<path[]>> }) {
+export default function AddPath({
+    url,
+    setPaths,
+    setShowAddPath,
+    setProcessing,
+}: {
+    url: URL
+    setPaths: Dispatch<SetStateAction<path[]>>
+    setShowAddPath: Dispatch<SetStateAction<boolean>>
+    setProcessing: Dispatch<SetStateAction<string | null>>
+}) {
     const [path, setPath] = useState('')
 
     function onSubmitPath(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        setProcessing(path)
+        setShowAddPath(false)
         createPath(path, url).then(cPath => {
             setPaths(p => [...p, cPath])
+            setProcessing(null)
+            setPath('')
         })
     }
 
