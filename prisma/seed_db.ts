@@ -14,7 +14,6 @@ async function main() {
     for (let entry of data) {
         await prisma.uRL.create({
             data: {
-                path: entry.path,
                 to_url: entry.url,
             },
         })
