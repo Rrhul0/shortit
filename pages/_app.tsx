@@ -17,11 +17,18 @@ export default function App({ Component, pageProps }: AppProps) {
         setUrls(urls)
     }, [])
 
+    useEffect(() => {
+        setTimeout(function () {
+            setError(null)
+        }, 10000)
+    }, [error?.message])
+
     return (
         <ErrorContext.Provider value={{ error, setError }}>
             <URLsContext.Provider value={{ urls, setUrls }}>
                 <>
                     <Component {...pageProps} />
+                    <button onClick={() => setError(new Error('fuck you'))}>click</button>
                     <footer>
                         {error ? <div>Error Occoured: {error.message}</div> : null}
                         <div>
