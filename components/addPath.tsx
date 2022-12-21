@@ -1,38 +1,42 @@
 import { path, URL } from '@prisma/client'
-import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
-import { UrlWithPaths } from './contexts/URLsContext'
+import { Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react'
+import { URLsContext, UrlWithPaths } from './contexts/URLsContext'
 
 export default function AddPath({
-    url,
-    setPaths,
+    urlIndex,
     setShowAddPath,
     setProcessing,
 }: {
-    url: URL
-    setPaths: Dispatch<SetStateAction<path[]>>
+    urlIndex: number
     setShowAddPath: Dispatch<SetStateAction<boolean>>
     setProcessing: Dispatch<SetStateAction<string | null>>
 }) {
-    const [path, setPath] = useState('')
+    const [pathValue, setPathValue] = useState('')
+    const { urls, setUrls } = useContext(URLsContext)
+    const url = urls[urlIndex]
 
     function onSubmitPath(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
-        setProcessing(path)
+        setProcessing(pathValue)
         setShowAddPath(false)
-        createPath(path, url)
-            .then(cPath => {
-                setPaths(p => [...p, cPath])
-                setPath('')
+        createPath(pathValue, url)
+            .then(path => {
+                //set paths to selected url
+                setUrls(turls => {
+                    turls[urlIndex].paths = [...turls[urlIndex].paths, path]
+                    return [...turls]
+                })
             })
             .catch()
             .finally(() => {
                 setProcessing(null)
+                setPathValue('')
             })
     }
 
     return (
         <form onSubmit={onSubmitPath}>
-            <input type='text' value={path} onChange={e => setPath(e.currentTarget.value)} />
+            <input type='text' value={pathValue} onChange={e => setPathValue(e.currentTarget.value)} />
             <button type='submit'>Add</button>
         </form>
     )

@@ -1,11 +1,14 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import AddPath from './addPath'
-import { UrlWithPaths } from './contexts/URLsContext'
+import { URLsContext } from './contexts/URLsContext'
 
-export default function ShowUrls({ url }: { url: UrlWithPaths }) {
+export default function ShowUrls({ urlIndex }: { urlIndex: number }) {
     const [showAddPath, setShowAddPath] = useState(false)
     const [processing, setProcessing] = useState<string | null>(null)
-    const [paths, setPaths] = useState(url.paths)
+
+    const { urls } = useContext(URLsContext)
+    const url = urls[urlIndex]
+    const paths = url.paths
 
     return (
         <li key={url.id}>
@@ -36,12 +39,7 @@ export default function ShowUrls({ url }: { url: UrlWithPaths }) {
                     ) : null}
                 </ul>
                 {showAddPath ? (
-                    <AddPath
-                        url={url}
-                        setPaths={setPaths}
-                        setShowAddPath={setShowAddPath}
-                        setProcessing={setProcessing}
-                    />
+                    <AddPath urlIndex={urlIndex} setShowAddPath={setShowAddPath} setProcessing={setProcessing} />
                 ) : null}
                 <button onClick={() => setShowAddPath(o => !o)}>{showAddPath ? 'close' : 'Add more paths'}</button>
             </div>

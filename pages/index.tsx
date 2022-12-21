@@ -55,8 +55,8 @@ export default function Home() {
                     </div>
                 ) : null}
                 <ol>
-                    {urls?.reverse().map(url => (
-                        <ShowUrls key={url.id} url={url} />
+                    {urls?.reverse().map((url, index) => (
+                        <ShowUrls key={url.id} urlIndex={index} />
                     ))}
                 </ol>
             </main>
