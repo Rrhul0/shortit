@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps<{ url?: string }> = async co
     if (!path || Array.isArray(path)) return { props: {} }
     if (!isNaN(parseInt(path))) {
         //path is a url id
-        const url = await prisma.uRL.findUnique({ where: { id: parseInt(path) } })
+        const url = await prisma.url.findUnique({ where: { id: parseInt(path) } })
         if (!url) return { props: {} }
         return {
             props: {
@@ -49,11 +49,11 @@ export const getServerSideProps: GetServerSideProps<{ url?: string }> = async co
         }
     } else {
         //path is a string from path table
-        const foundPath = await prisma.path.findUnique({ where: { path }, include: { URL: {} } })
+        const foundPath = await prisma.path.findUnique({ where: { path }, include: { url: {} } })
         if (!foundPath) return { props: {} }
         return {
             props: {
-                url: foundPath.URL?.to_url,
+                url: foundPath.url?.to_url,
             },
         }
     }

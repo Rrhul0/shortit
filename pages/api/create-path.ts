@@ -13,11 +13,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const pathCreated = await prisma.path.create({
         data: {
             path,
-            uRLId: urlId,
+            urlId: urlId,
         },
     })
 
-    const test = await prisma.uRL.findUnique({ where: { id: urlId }, include: { paths: {} } })
+    const test = await prisma.url.findUnique({ where: { id: urlId }, include: { paths: {} } })
 
     res.status(201).json(pathCreated)
 }

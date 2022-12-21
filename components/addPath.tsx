@@ -1,4 +1,4 @@
-import { path, URL } from '@prisma/client'
+import { Path } from '@prisma/client'
 import { Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react'
 import { ErrorContext } from './contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from './contexts/URLsContext'
@@ -22,7 +22,7 @@ export default function AddPath({
         e.preventDefault()
         setProcessing(pathValue)
         setShowAddPath(false)
-        createPath(pathValue, url)
+        createPath(pathValue, url, urlIndex)
             .then(path => {
                 //set paths to selected url
                 setUrls(turls => {
@@ -45,7 +45,7 @@ export default function AddPath({
     )
 }
 
-async function createPath(path: string, url: URL) {
+async function createPath(path: string, url: UrlWithPaths, urlIndex: number) {
     const res = await fetch('/api/create-path', {
         method: 'POST',
         body: JSON.stringify({
@@ -55,7 +55,8 @@ async function createPath(path: string, url: URL) {
     })
     if (res.status !== 201) throw new Error('something wrong with server response')
 
-    const createdPath: path = await res.json()
+    const createdPath: Path = await res.json()
+    const paths = [...url.paths, createdPath]
 
     // save to localstorage
     const urlsLocalstorage = localStorage.getItem('urls')
@@ -64,11 +65,7 @@ async function createPath(path: string, url: URL) {
         urls = JSON.parse(urlsLocalstorage)
         if (!Array.isArray(urls)) urls = []
     }
-    urls.map(u => {
-        if (url.id !== u.id) return u
-        u.paths = [...u.paths, createdPath]
-        return u
-    })
+    urls[urlIndex].paths = paths
     localStorage.setItem('urls', JSON.stringify(urls))
 
     return createdPath

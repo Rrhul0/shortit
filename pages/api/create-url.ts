@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     const fullURL: string = JSON.parse(req.body).url
-    const url = await prisma.uRL.create({
+    const url = await prisma.url.create({
         data: {
             to_url: fullURL,
         },

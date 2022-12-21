@@ -12,7 +12,7 @@ const data = Array.from({ length: MAX_NUMBER_OF_URLS }).map(() => ({
 
 async function main() {
     for (let entry of data) {
-        await prisma.uRL.create({
+        await prisma.url.create({
             data: {
                 to_url: entry.url,
             },

@@ -10,19 +10,19 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model URL {
+model Url {
     id           Int      @id @unique @default(autoincrement())
-    paths        path[]
+    paths        Path[]
     to_url       String
     time_created DateTime @default(now())
     updated_at   DateTime @updatedAt
 }
 
-model path {
+model Path {
     id           Int      @id @unique @default(autoincrement())
     path         String   @unique
-    URL          URL?     @relation(fields: [uRLId], references: [id])
-    uRLId        Int?
+    url          Url?     @relation(fields: [urlId], references: [id])
+    urlId        Int?
     time_created DateTime @default(now())
     updated_at   DateTime @updatedAt
 }
