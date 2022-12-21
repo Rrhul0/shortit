@@ -1,5 +1,6 @@
 import { path, URL } from '@prisma/client'
 import { Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react'
+import { ErrorContext } from './contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from './contexts/URLsContext'
 
 export default function AddPath({
@@ -15,6 +16,8 @@ export default function AddPath({
     const { urls, setUrls } = useContext(URLsContext)
     const url = urls[urlIndex]
 
+    const { setError } = useContext(ErrorContext)
+
     function onSubmitPath(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setProcessing(pathValue)
@@ -27,7 +30,7 @@ export default function AddPath({
                     return [...turls]
                 })
             })
-            .catch()
+            .catch(err => setError(err as Error))
             .finally(() => {
                 setProcessing(null)
                 setPathValue('')
@@ -54,7 +57,7 @@ async function createPath(path: string, url: URL) {
 
     const createdPath: path = await res.json()
 
-    //save to localstorage
+    // save to localstorage
     const urlsLocalstorage = localStorage.getItem('urls')
     let urls: UrlWithPaths[] = []
     if (urlsLocalstorage) {

@@ -1,18 +1,18 @@
 import { FormEvent, useContext, useState } from 'react'
+import { ErrorContext } from '../components/contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from '../components/contexts/URLsContext'
 import ShowUrls from '../components/showUrls'
 
 export default function Home() {
     const [url, setUrl] = useState('')
     const [processing, setProcessing] = useState<string | null>(null)
-    const [error, setError] = useState<string>()
     const { urls, setUrls } = useContext(URLsContext)
+    const { setError } = useContext(ErrorContext)
 
     function onSubmitURL(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
         let full_url = encodeURI(url)
         //check url first
-        //no space in full url
 
         //check if it have https in front of it
         const regexp = /^http(s)?:\/\//
@@ -21,17 +21,13 @@ export default function Home() {
         //add the processing entry before creating url
         setProcessing(full_url)
 
+        //clear input
+        setUrl('')
+
         //send data/url to create short url endpoint and receive short url it
         createURL(full_url)
-            .then(url => {
-                //clear input
-                setUrl('')
-                //fix the urls state
-                setUrls(tUrls => [...tUrls, url])
-            })
-            .catch(err => {
-                setError((err as Error).message)
-            })
+            .then(url => setUrls(tUrls => [...tUrls, url])) //add url to urls context
+            .catch(err => setError(err as Error))
             .finally(() => setProcessing(null))
     }
 
@@ -60,17 +56,6 @@ export default function Home() {
                     ))}
                 </ol>
             </main>
-
-            <footer>
-                {error ? <div>Something is wrong: {error}</div> : null}
-
-                <div>
-                    Created by{' '}
-                    <a href='https://github.com/rrhul0' target='_blank' rel='noopener noreferrer'>
-                        Rahul Raj
-                    </a>
-                </div>
-            </footer>
         </div>
     )
 }
