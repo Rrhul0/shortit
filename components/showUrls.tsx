@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { urlWithPaths } from '../pages'
 import AddPath from './addPath'
+import { UrlWithPaths } from './contexts/URLsContext'
 
-export default function ShowUrls({ url }: { url: urlWithPaths }) {
+export default function ShowUrls({ url }: { url: UrlWithPaths }) {
     const [showAddPath, setShowAddPath] = useState(false)
     const [processing, setProcessing] = useState<string | null>(null)
     const [paths, setPaths] = useState(url.paths)

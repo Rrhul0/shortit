@@ -1,49 +1,12 @@
-import { path, URL } from '@prisma/client'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useContext, useState } from 'react'
+import { URLsContext, UrlWithPaths } from '../components/contexts/URLsContext'
 import ShowUrls from '../components/showUrls'
-
-export interface urlWithPaths extends URL {
-    paths: path[]
-}
-
-async function createURL(fullURL: string) {
-    const res = await fetch('/api/create-url', {
-        method: 'POST',
-        body: JSON.stringify({
-            url: fullURL,
-        }),
-    })
-    if (res.status !== 201) throw new Error('something wrong with server response')
-
-    const url: urlWithPaths = await res.json()
-
-    //save to localstorage
-    const urlsLocalstorage = localStorage.getItem('urls')
-    let urls: urlWithPaths[] = []
-    if (urlsLocalstorage) {
-        urls = JSON.parse(urlsLocalstorage)
-        if (!Array.isArray(urls)) urls = []
-    }
-    localStorage.setItem('urls', JSON.stringify([...urls, url]))
-
-    return url
-}
 
 export default function Home() {
     const [url, setUrl] = useState('')
     const [processing, setProcessing] = useState<string | null>(null)
-    const [urls, setUrls] = useState<urlWithPaths[]>([])
     const [error, setError] = useState<string>()
-
-    useEffect(() => {
-        const urlsLocalstorage = window.localStorage.getItem('urls')
-        let urls: urlWithPaths[] = []
-        if (urlsLocalstorage) {
-            urls = JSON.parse(urlsLocalstorage)
-            if (!Array.isArray(urls)) urls = []
-        }
-        setUrls(urls)
-    }, [])
+    const { urls, setUrls } = useContext(URLsContext)
 
     function onSubmitURL(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -110,4 +73,27 @@ export default function Home() {
             </footer>
         </div>
     )
+}
+
+async function createURL(fullURL: string) {
+    const res = await fetch('/api/create-url', {
+        method: 'POST',
+        body: JSON.stringify({
+            url: fullURL,
+        }),
+    })
+    if (res.status !== 201) throw new Error('something wrong with server response')
+
+    const url: UrlWithPaths = await res.json()
+
+    //save to localstorage
+    const urlsLocalstorage = localStorage.getItem('urls')
+    let urls: UrlWithPaths[] = []
+    if (urlsLocalstorage) {
+        urls = JSON.parse(urlsLocalstorage)
+        if (!Array.isArray(urls)) urls = []
+    }
+    localStorage.setItem('urls', JSON.stringify([...urls, url]))
+
+    return url
 }

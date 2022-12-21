@@ -1,5 +1,6 @@
 import { path, URL } from '@prisma/client'
 import { Dispatch, FormEvent, SetStateAction, useState } from 'react'
+import { UrlWithPaths } from './contexts/URLsContext'
 
 export default function AddPath({
     url,
@@ -18,11 +19,15 @@ export default function AddPath({
         e.preventDefault()
         setProcessing(path)
         setShowAddPath(false)
-        createPath(path, url).then(cPath => {
-            setPaths(p => [...p, cPath])
-            setProcessing(null)
-            setPath('')
-        })
+        createPath(path, url)
+            .then(cPath => {
+                setPaths(p => [...p, cPath])
+                setPath('')
+            })
+            .catch()
+            .finally(() => {
+                setProcessing(null)
+            })
     }
 
     return (
@@ -47,9 +52,7 @@ async function createPath(path: string, url: URL) {
 
     //save to localstorage
     const urlsLocalstorage = localStorage.getItem('urls')
-    let urls: (URL & {
-        paths: path[]
-    })[] = []
+    let urls: UrlWithPaths[] = []
     if (urlsLocalstorage) {
         urls = JSON.parse(urlsLocalstorage)
         if (!Array.isArray(urls)) urls = []
