@@ -26,9 +26,8 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <ErrorContext.Provider value={{ error, setError }}>
             <URLsContext.Provider value={{ urls, setUrls }}>
-                <>
+                <main>
                     <Component {...pageProps} />
-                    <button onClick={() => setError(new Error('fuck you'))}>click</button>
                     <footer>
                         {error ? <div>Error Occoured: {error.message}</div> : null}
                         <div>
@@ -38,7 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
                             </a>
                         </div>
                     </footer>
-                </>
+                </main>
             </URLsContext.Provider>
         </ErrorContext.Provider>
     )
