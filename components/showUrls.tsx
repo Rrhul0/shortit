@@ -11,10 +11,12 @@ export default function ShowUrls({ urlIndex }: { urlIndex: number }) {
     const paths = url.paths
 
     return (
-        <li key={url.id}>
-            <div>url: {url.to_url}</div>
+        <li key={url.id} className='border rounded-lg px-3 py-2 bg-stone-200'>
             <div>
-                paths:{' '}
+                Full URL: <a href={url.to_url}>{url.to_url}</a>
+            </div>
+            <div>
+                Short URLs:{' '}
                 <ul>
                     <li>
                         <a href={window.location.href + url.id} target='_blank' rel='noopener noreferrer'>

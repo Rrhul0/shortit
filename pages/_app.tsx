@@ -28,7 +28,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <ErrorContext.Provider value={{ error, setError }}>
             <URLsContext.Provider value={{ urls, setUrls }}>
                 <main className='grid grid-cols-1 grid-rows-[1fr_60px] h-screen w-screen'>
-                    <Component {...pageProps} />
+                    <div className='overflow-y-scroll'>
+                        <Component {...pageProps} />
+                    </div>
                     <Footer />
                 </main>
             </URLsContext.Provider>

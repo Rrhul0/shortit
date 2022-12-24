@@ -32,30 +32,29 @@ export default function Home() {
     }
 
     return (
-        <div>
-            <main>
-                <h1>Welcome to ShortIt</h1>
+        <div className='flex flex-col items-center gap-6'>
+            <h1 className='font-extrabold text-5xl mt-12'>Welcome to ShortIt</h1>
 
-                <form onSubmit={onSubmitURL}>
-                    <input
-                        placeholder='Type OR Paste your large URL'
-                        value={url}
-                        onChange={e => setUrl(e.currentTarget.value)}
-                    />
-                    <button type='submit'>ShortIt</button>
-                </form>
+            <form onSubmit={onSubmitURL} className='flex gap-3'>
+                <input
+                    placeholder='Your large URL'
+                    value={url}
+                    className='px-3 rounded-lg w-[25vw] outline-blue-200 outline outline-2 hover:outline-blue-400 focus-visible:outline-blue-400 hover:outline hover:outline-offset-0 hover:outline-2 focus-visible:outline focus-visible:outline-2'
+                    onChange={e => setUrl(e.currentTarget.value)}
+                />
+                <button type='submit' className='transition-all bg-stone-500 rounded-lg px-2 py-1.5 hover:bg-stone-600'>
+                    ShortIt
+                </button>
+            </form>
+            <ol className='p-4 self-stretch flex flex-col gap-4'>
                 {processing ? (
-                    <div>
+                    <li>
                         <div>url: {processing}</div>
-                        <div>Processing...</div>
-                    </div>
+                        <div>path: processing...</div>
+                    </li>
                 ) : null}
-                <ol>
-                    {urls?.reverse().map((url, index) => (
-                        <ShowUrls key={url.id} urlIndex={index} />
-                    ))}
-                </ol>
-            </main>
+                {urls?.map((url, index) => <ShowUrls key={url.id} urlIndex={index} />).reverse()}
+            </ol>
         </div>
     )
 }
