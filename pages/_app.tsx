@@ -27,11 +27,16 @@ export default function App({ Component, pageProps }: AppProps) {
     return (
         <ErrorContext.Provider value={{ error, setError }}>
             <URLsContext.Provider value={{ urls, setUrls }}>
-                <main className='grid grid-cols-1 grid-rows-[1fr_60px] h-screen w-screen'>
-                    <div className='overflow-y-scroll'>
+                <main className='grid grid-cols-1 grid-rows-[1fr] h-screen w-screen overflow-hidden'>
+                    <div className='overflow-scroll'>
                         <Component {...pageProps} />
+                        <Footer />
                     </div>
-                    <Footer />
+                    {error ? (
+                        <div className='absolute bottom-0 left-0 right-0 bg-red-500 py-1 px-4 text-lg'>
+                            Error Occoured: {'error.message'}
+                        </div>
+                    ) : null}
                 </main>
             </URLsContext.Provider>
         </ErrorContext.Provider>

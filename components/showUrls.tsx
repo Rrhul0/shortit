@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react'
 import AddPath from './addPath'
 import { URLsContext } from './contexts/URLsContext'
+import ShowPaths from './showPaths'
 
 export default function ShowUrls({ urlIndex }: { urlIndex: number }) {
     const [showAddPath, setShowAddPath] = useState(false)
@@ -12,39 +13,41 @@ export default function ShowUrls({ urlIndex }: { urlIndex: number }) {
 
     return (
         <li key={url.id} className='border rounded-lg px-3 py-2 bg-stone-200'>
-            <div>
-                Full URL: <a href={url.to_url}>{url.to_url}</a>
+            <div className='p-2 text-xl font-semibold'>
+                <a href={url.to_url} className='text-pink-500  hover:text-pink-600'>
+                    {url.to_url}
+                </a>
+                {/*TODO: add delete or edit url button */}
             </div>
-            <div>
-                Short URLs:{' '}
-                <ul>
+
+            <ul className='flex flex-wrap gap-2 items-stretch bg-stone-300 p-2 rounded-lg'>
+                <li>
+                    <ShowPaths path={window.location.href + url.id} />
+                </li>
+                {paths.length
+                    ? paths.map(path => (
+                          <li key={path.id}>
+                              <ShowPaths path={window.location.href + path.path} />
+                          </li>
+                      ))
+                    : null}
+                {processing ? (
                     <li>
-                        <a href={window.location.href + url.id} target='_blank' rel='noopener noreferrer'>
-                            {window.location.href + url.id}
-                        </a>
+                        <ShowPaths path={window.location.href + processing} />
                     </li>
-                    {paths.length
-                        ? paths.map(path => (
-                              <li key={path.id}>
-                                  <a href={window.location.href + path.path} target='_blank' rel='noopener noreferrer'>
-                                      {window.location.href + path.path}
-                                  </a>
-                              </li>
-                          ))
-                        : null}
-                    {processing ? (
-                        <li>
-                            <a href={window.location.href + processing} target='_blank' rel='noopener noreferrer'>
-                                {window.location.href + processing}
-                            </a>
-                        </li>
-                    ) : null}
-                </ul>
-                {showAddPath ? (
-                    <AddPath urlIndex={urlIndex} setShowAddPath={setShowAddPath} setProcessing={setProcessing} />
                 ) : null}
-                <button onClick={() => setShowAddPath(o => !o)}>{showAddPath ? 'close' : 'Add more paths'}</button>
-            </div>
+                <li className='flex gap-4'>
+                    {showAddPath ? (
+                        <AddPath urlIndex={urlIndex} setShowAddPath={setShowAddPath} setProcessing={setProcessing} />
+                    ) : null}
+                    <button
+                        className={(showAddPath ? 'bg-red-400' : 'bg-emerald-400') + ' rounded-md px-2'}
+                        onClick={() => setShowAddPath(o => !o)}
+                    >
+                        {showAddPath ? 'close' : 'Add more'}
+                    </button>
+                </li>
+            </ul>
         </li>
     )
 }
