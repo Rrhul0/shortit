@@ -1,20 +1,23 @@
 import { useContext, useState } from 'react'
 import AddPath from './addPath'
-import { URLsContext } from './contexts/URLsContext'
+import { UrlWithPaths } from './contexts/URLsContext'
 import ShowPaths from './showPaths'
 
-export default function ShowUrls({ urlIndex }: { urlIndex: number }) {
+export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlIndex: number }) {
     const [showAddPath, setShowAddPath] = useState(false)
     const [processing, setProcessing] = useState<string | null>(null)
 
-    const { urls } = useContext(URLsContext)
-    const url = urls[urlIndex]
     const paths = url.paths
 
     return (
         <li key={url.id} className='border rounded-lg px-3 py-2 bg-stone-200'>
             <div className='p-2 text-xl font-semibold'>
-                <a href={url.to_url} className='text-pink-500  hover:text-pink-600'>
+                <a
+                    href={url.to_url}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='text-pink-500  hover:text-pink-600'
+                >
                     {url.to_url}
                 </a>
                 {/*TODO: add delete or edit url button */}
