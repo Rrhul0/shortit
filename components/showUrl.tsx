@@ -10,7 +10,7 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
     const paths = url.paths
 
     return (
-        <li key={url.id} className='border rounded-lg px-3 py-2 bg-stone-200'>
+        <li key={url.id} className='border rounded-lg px-3 py-2 bg-stone-100'>
             <div className='p-2 text-xl font-semibold'>
                 <a
                     href={url.to_url}
@@ -23,7 +23,7 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
                 {/*TODO: add delete or edit url button */}
             </div>
 
-            <ul className='flex flex-wrap gap-2 items-stretch bg-stone-300 p-2 rounded-lg'>
+            <ul className='flex flex-wrap gap-2 items-stretch bg-stone-200 p-2 rounded-lg'>
                 <li>
                     <ShowPaths path={window.location.href + url.id} />
                 </li>

@@ -4,11 +4,12 @@ import { URLsContext, UrlWithPaths } from './contexts/URLsContext'
 
 const CreateUrlForm = ({ setProcessing }: { setProcessing: Dispatch<SetStateAction<string | null>> }) => {
     const [url, setUrl] = useState('')
-    const { urls, setUrls } = useContext(URLsContext)
+    const { setUrls } = useContext(URLsContext)
     const { setError } = useContext(ErrorContext)
 
     function onSubmitURL(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        if (!url) return
         let full_url = encodeURI(url)
         //check url first
 
@@ -30,15 +31,18 @@ const CreateUrlForm = ({ setProcessing }: { setProcessing: Dispatch<SetStateActi
     }
 
     return (
-        <form onSubmit={onSubmitURL} className='flex gap-3'>
+        <form onSubmit={onSubmitURL} className='flex gap-3 w-full text-lg justify-center'>
             <input
                 placeholder='Your large URL'
                 value={url}
-                className='px-3 rounded-lg w-[25vw] outline-blue-200 outline outline-2 hover:outline-blue-400 focus-visible:outline-blue-400 hover:outline hover:outline-offset-0 hover:outline-2 focus-visible:outline focus-visible:outline-2'
+                className='px-3 rounded-lg w-1/3 shadow-lg border  border-stone-200 bg-stone-200 focus:outline-none focus:bg-white'
                 onChange={e => setUrl(e.currentTarget.value)}
             />
-            <button type='submit' className='transition-all bg-stone-500 rounded-lg px-2 py-1.5 hover:bg-stone-600'>
-                ShortIt
+            <button
+                type='submit'
+                className='transition-all text-white tracking-wider bg-violet-500 rounded-lg px-3 py-2 hover:bg-violet-400 active:shadow-inner'
+            >
+                Short It
             </button>
         </form>
     )
