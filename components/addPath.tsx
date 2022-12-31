@@ -20,6 +20,9 @@ export default function AddPath({
 
     function onSubmitPath(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        //can not be empty path
+        if (!pathValue) return
+
         setProcessing(pathValue)
         setShowAddPath(false)
         createPath(pathValue, url, urlIndex)
@@ -43,7 +46,7 @@ export default function AddPath({
                 type='text'
                 value={pathValue}
                 className='rounded-l-md px-2 outline-white outline outline-2 hover:outline-blue-400 focus-visible:outline-blue-400 hover:outline hover:outline-offset-0 hover:outline-2 focus-visible:outline focus-visible:outline-2'
-                onChange={e => setPathValue(e.currentTarget.value)}
+                onChange={e => setPathValue(e.currentTarget.value.replace(' ', '-'))}
             />
             <button type='submit' className='bg-emerald-400 outline-emerald-400 outline outline-2 px-2 rounded-r-md'>
                 Add
