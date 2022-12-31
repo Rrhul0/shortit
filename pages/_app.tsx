@@ -1,4 +1,5 @@
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { ErrorContext } from '../components/contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from '../components/contexts/URLsContext'
@@ -25,18 +26,28 @@ export default function App({ Component, pageProps }: AppProps) {
     }, [error?.message])
 
     return (
-        <ErrorContext.Provider value={{ error, setError }}>
-            <URLsContext.Provider value={{ urls, setUrls }}>
-                <main className='grid grid-cols-1 grid-rows-[1fr] h-screen w-screen '>
-                    <Component {...pageProps} />
-                    <Footer />
-                </main>
-                {error ? (
-                    <div className='absolute bottom-0 left-0 right-0 bg-red-500 py-1 px-4 text-lg'>
-                        Error Occoured: {error.message}
-                    </div>
-                ) : null}
-            </URLsContext.Provider>
-        </ErrorContext.Provider>
+        <>
+            <Head>
+                <title>ShortIt: A Fully Featured URL Shortner</title>
+                <meta
+                    name='description'
+                    content='A fully featured URL Shortner that can managed your shorted URL efficiently.'
+                />
+                <meta property='og:title' content='ShortIt: A Fully Featured URL Shortner' key='title' />
+            </Head>
+            <ErrorContext.Provider value={{ error, setError }}>
+                <URLsContext.Provider value={{ urls, setUrls }}>
+                    <main className='grid grid-cols-1 grid-rows-[1fr] h-screen w-screen '>
+                        <Component {...pageProps} />
+                        <Footer />
+                    </main>
+                    {error ? (
+                        <div className='absolute bottom-0 left-0 right-0 bg-red-500 py-1 px-4 text-lg'>
+                            Error Occoured: {error.message}
+                        </div>
+                    ) : null}
+                </URLsContext.Provider>
+            </ErrorContext.Provider>
+        </>
     )
 }
