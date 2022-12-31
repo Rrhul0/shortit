@@ -7,10 +7,10 @@ export default function ShowAllUrls({ processing }: { processing: string | null 
     const { urls } = useContext(URLsContext)
 
     return (
-        <ol className='p-4 self-stretch flex flex-col gap-4'>
+        <ol className='p-4 self-stretch flex flex-wrap gap-4 '>
             {/* temporary solution for showing same design for processing url */}
             {processing ? (
-                <li className='border rounded-lg px-3 py-2 bg-stone-100'>
+                <li className='border rounded-lg px-3 py-2 bg-stone-100 shadow-xl'>
                     <div className='p-2 text-xl font-semibold'>
                         <a
                             href={processing}
