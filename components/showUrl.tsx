@@ -16,40 +16,36 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
                     href={url.to_url}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='text-pink-500  hover:text-pink-600'
+                    className='text-pink-500 hover:underline hover:underline-offset-1 '
                 >
                     {url.to_url}
                 </a>
                 {/*TODO: add delete or edit url button */}
             </div>
 
-            <ul className='flex flex-wrap gap-2 items-stretch bg-stone-200 p-2 rounded-lg'>
-                <li>
-                    <ShowPaths path={window.location.href + url.id} />
-                </li>
+            <ul className='flex flex-wrap gap-x-2 gap-y-3 items-center bg-stone-200 px-2 py-2.5  rounded-lg'>
+                <ShowPaths path={window.location.href + url.id} />
+
                 {paths.length
-                    ? paths.map(path => (
-                          <li key={path.id}>
-                              <ShowPaths path={window.location.href + path.path} />
-                          </li>
-                      ))
+                    ? paths.map(path => <ShowPaths key={path.id} path={window.location.href + path.path} />)
                     : null}
-                {processing ? (
-                    <li>
-                        <ShowPaths path={window.location.href + processing} />
-                    </li>
-                ) : null}
-                <li className='flex gap-4'>
+
+                {processing ? <ShowPaths path={window.location.href + processing} /> : null}
+
+                <div className='flex gap-1 h-7'>
                     {showAddPath ? (
                         <AddPath urlIndex={urlIndex} setShowAddPath={setShowAddPath} setProcessing={setProcessing} />
                     ) : null}
                     <button
-                        className={(showAddPath ? 'bg-red-400' : 'bg-emerald-400') + ' rounded-md px-2'}
+                        className={
+                            (showAddPath ? 'bg-red-400 hover:bg-red-500' : 'bg-emerald-500 hover:bg-emerald-600') +
+                            ' transition-all rounded-md px-2 text-white'
+                        }
                         onClick={() => setShowAddPath(o => !o)}
                     >
                         {showAddPath ? 'close' : 'Add more'}
                     </button>
-                </li>
+                </div>
             </ul>
         </li>
     )
