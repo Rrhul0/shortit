@@ -1,5 +1,5 @@
 import { Path } from '@prisma/client'
-import { Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react'
+import { Dispatch, FormEvent, RefObject, SetStateAction, useContext, useState } from 'react'
 import { ErrorContext } from './contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from './contexts/URLsContext'
 
@@ -43,6 +43,7 @@ export default function AddPath({
     return (
         <form onSubmit={onSubmitPath} className='flex rounded-md '>
             <input
+                autoFocus
                 type='text'
                 value={pathValue}
                 className='rounded-l-md px-2 border-y border-l border-stone-100 bg-stone-100 drop-shadow-lg hover:border-blue-400  focus:border-blue-600 focus:outline-none'

@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import AddPath from './addPath'
 import { UrlWithPaths } from './contexts/URLsContext'
 import ShowPaths from './showPaths'
