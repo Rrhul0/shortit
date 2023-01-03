@@ -10,7 +10,7 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
     const paths = url.paths
 
     return (
-        <li key={url.id} className='border rounded-lg px-3 py-2 bg-stone-100 shadow-xl flex-grow'>
+        <li key={url.id} className='border rounded-lg px-3 py-2 shadow-xl flex-grow'>
             <div className='p-2 text-xl font-semibold'>
                 <a
                     href={url.to_url}
@@ -23,7 +23,7 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
                 {/*TODO: add delete or edit url button */}
             </div>
 
-            <ul className='flex flex-wrap gap-x-2 gap-y-3 items-center bg-stone-200 px-2 py-2.5  rounded-lg'>
+            <ul className='border-t flex flex-wrap gap-x-2 gap-y-3 items-center py-2.5 '>
                 <ShowPaths path={window.location.href + url.id} />
 
                 {paths.length
@@ -39,7 +39,7 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
                     <button
                         className={
                             (showAddPath ? 'bg-red-400 hover:bg-red-500' : 'bg-emerald-500 hover:bg-emerald-600') +
-                            ' transition-all rounded-md px-2 text-white'
+                            ' transition-all rounded-md px-2 text-white drop-shadow-lg'
                         }
                         onClick={() => setShowAddPath(o => !o)}
                     >

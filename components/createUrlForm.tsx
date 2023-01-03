@@ -35,12 +35,12 @@ const CreateUrlForm = ({ setProcessing }: { setProcessing: Dispatch<SetStateActi
             <input
                 placeholder='Your large URL'
                 value={url}
-                className='px-3 rounded-lg md:w-1/3 shadow-lg border  border-stone-200 bg-stone-200 focus:outline-none focus:bg-white'
+                className='px-3 rounded-lg md:w-1/3 drop-shadow-lg bg-stone-100 border-2 border-stone-100 focus:border-violet-600 transition-colors hover:border-violet-400 focus:outline-none focus:bg-white'
                 onChange={e => setUrl(e.currentTarget.value)}
             />
             <button
                 type='submit'
-                className='transition-all text-white tracking-wider shadow-lg bg-violet-500 rounded-lg px-3 py-2 hover:bg-violet-600 active:shadow-inner'
+                className='transition-all text-white tracking-wider drop-shadow-lg bg-violet-500 rounded-lg px-3 py-2 hover:bg-violet-600 active:shadow-inner'
             >
                 Short It
             </button>

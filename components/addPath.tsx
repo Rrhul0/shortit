@@ -45,12 +45,12 @@ export default function AddPath({
             <input
                 type='text'
                 value={pathValue}
-                className='rounded-l-md px-2 bg-stone-100 focus:shadow-inner focus:outline-none'
+                className='rounded-l-md px-2 border-y border-l border-stone-100 bg-stone-100 drop-shadow-lg hover:border-blue-400  focus:border-blue-600 focus:outline-none'
                 onChange={e => setPathValue(e.currentTarget.value.replace(' ', '-'))}
             />
             <button
                 type='submit'
-                className='bg-emerald-500 px-2 rounded-r-md text-white hover:bg-emerald-600 transition-all'
+                className='bg-emerald-500 px-2 rounded-r-md drop-shadow-lg text-white hover:bg-emerald-600 transition-all'
             >
                 Add
             </button>
