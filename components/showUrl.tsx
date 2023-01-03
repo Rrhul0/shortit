@@ -23,7 +23,7 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
                 {/*TODO: add delete or edit url button */}
             </div>
 
-            <ul className='border-t flex flex-wrap gap-x-2 gap-y-3 items-center py-2.5 '>
+            <ul className='border-t flex flex-wrap gap-x-2 gap-y-3 items-stretch py-2.5 '>
                 <ShowPaths path={window.location.href + url.id} />
 
                 {paths.length
@@ -32,7 +32,7 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
 
                 {processing ? <ShowPaths path={window.location.href + processing} /> : null}
 
-                <div className='flex gap-1 h-7'>
+                <div className='flex gap-1'>
                     {showAddPath ? (
                         <AddPath urlIndex={urlIndex} setShowAddPath={setShowAddPath} setProcessing={setProcessing} />
                     ) : null}
