@@ -4,9 +4,10 @@ import { useEffect, useState } from 'react'
 import { ErrorContext } from '../components/contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from '../components/contexts/URLsContext'
 import Footer from '../components/Footer'
+import { SessionProvider } from 'next-auth/react'
 import '../styles/global.css'
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [urls, setUrls] = useState<UrlWithPaths[]>([])
     const [error, setError] = useState<Error | null>(null)
 
@@ -35,19 +36,21 @@ export default function App({ Component, pageProps }: AppProps) {
                 />
                 <meta property='og:title' content='ShortIt: A Fully Featured URL Shortner' key='title' />
             </Head>
-            <ErrorContext.Provider value={{ error, setError }}>
-                <URLsContext.Provider value={{ urls, setUrls }}>
-                    <main className='grid grid-cols-1 grid-rows-[1fr] h-screen w-screen '>
-                        <Component {...pageProps} />
-                        <Footer />
-                    </main>
-                    {error ? (
-                        <div className='absolute bottom-0 left-0 right-0 bg-red-500 py-1 px-4 text-lg'>
-                            Error Occoured: {error.message}
-                        </div>
-                    ) : null}
-                </URLsContext.Provider>
-            </ErrorContext.Provider>
+            <SessionProvider session={session}>
+                <ErrorContext.Provider value={{ error, setError }}>
+                    <URLsContext.Provider value={{ urls, setUrls }}>
+                        <main className='grid grid-cols-1 grid-rows-[1fr] h-screen w-screen '>
+                            <Component {...pageProps} />
+                            <Footer />
+                        </main>
+                        {error ? (
+                            <div className='absolute bottom-0 left-0 right-0 bg-red-500 py-1 px-4 text-lg'>
+                                Error Occoured: {error.message}
+                            </div>
+                        ) : null}
+                    </URLsContext.Provider>
+                </ErrorContext.Provider>
+            </SessionProvider>
         </>
     )
 }
