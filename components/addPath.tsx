@@ -1,5 +1,7 @@
 import { Path } from '@prisma/client'
+import { useSession } from 'next-auth/react'
 import { Dispatch, FormEvent, RefObject, SetStateAction, useContext, useState } from 'react'
+import getUrlsLocalstorage from '../lib/getUrlsLocalstorage'
 import { ErrorContext } from './contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from './contexts/URLsContext'
 
@@ -14,9 +16,11 @@ export default function AddPath({
 }) {
     const [pathValue, setPathValue] = useState('')
     const { urls, setUrls } = useContext(URLsContext)
-    const url = urls[urlIndex]
 
+    const { status } = useSession()
     const { setError } = useContext(ErrorContext)
+
+    const url = urls[urlIndex]
 
     function onSubmitPath(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -25,7 +29,7 @@ export default function AddPath({
 
         setProcessing(pathValue)
         setShowAddPath(false)
-        createPath(pathValue, url, urlIndex)
+        createPath(pathValue, url, urlIndex, status)
             .then(path => {
                 //set paths to selected url
                 setUrls(turls => {
@@ -59,7 +63,12 @@ export default function AddPath({
     )
 }
 
-async function createPath(path: string, url: UrlWithPaths, urlIndex: number) {
+async function createPath(
+    path: string,
+    url: UrlWithPaths,
+    urlIndex: number,
+    loginStatus: 'authenticated' | 'loading' | 'unauthenticated'
+) {
     const res = await fetch('/api/create-path', {
         method: 'POST',
         body: JSON.stringify({
@@ -72,15 +81,12 @@ async function createPath(path: string, url: UrlWithPaths, urlIndex: number) {
     const createdPath: Path = await res.json()
     const paths = [...url.paths, createdPath]
 
-    // save to localstorage
-    const urlsLocalstorage = localStorage.getItem('urls')
-    let urls: UrlWithPaths[] = []
-    if (urlsLocalstorage) {
-        urls = JSON.parse(urlsLocalstorage)
-        if (!Array.isArray(urls)) urls = []
+    // save to localstorage only if user is not logged in
+    if (loginStatus === 'unauthenticated') {
+        const urls = getUrlsLocalstorage()
+        urls[urlIndex].paths = paths
+        localStorage.setItem('urls', JSON.stringify(urls))
     }
-    urls[urlIndex].paths = paths
-    localStorage.setItem('urls', JSON.stringify(urls))
 
     return createdPath
 }

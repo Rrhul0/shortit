@@ -1,4 +1,6 @@
+import { useSession } from 'next-auth/react'
 import { Dispatch, FormEvent, SetStateAction, useContext, useState } from 'react'
+import getUrlsLocalstorage from '../lib/getUrlsLocalstorage'
 import { ErrorContext } from './contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from './contexts/URLsContext'
 
@@ -6,6 +8,8 @@ const CreateUrlForm = ({ setProcessing }: { setProcessing: Dispatch<SetStateActi
     const [url, setUrl] = useState('')
     const { setUrls } = useContext(URLsContext)
     const { setError } = useContext(ErrorContext)
+
+    const { status } = useSession()
 
     function onSubmitURL(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -24,7 +28,7 @@ const CreateUrlForm = ({ setProcessing }: { setProcessing: Dispatch<SetStateActi
         setUrl('')
 
         //send data/url to create short url endpoint and receive short url it
-        createURL(full_url)
+        createURL(full_url, status)
             .then(url => setUrls(tUrls => [...tUrls, url])) //add url to urls context
             .catch(err => setError(err as Error))
             .finally(() => setProcessing(null))
@@ -50,7 +54,7 @@ const CreateUrlForm = ({ setProcessing }: { setProcessing: Dispatch<SetStateActi
 
 export default CreateUrlForm
 
-async function createURL(fullURL: string) {
+async function createURL(fullURL: string, loginStatus: 'authenticated' | 'loading' | 'unauthenticated') {
     const res = await fetch('/api/create-url', {
         method: 'POST',
         body: JSON.stringify({
@@ -61,14 +65,8 @@ async function createURL(fullURL: string) {
 
     const url: UrlWithPaths = await res.json()
 
-    //save to localstorage
-    const urlsLocalstorage = localStorage.getItem('urls')
-    let urls: UrlWithPaths[] = []
-    if (urlsLocalstorage) {
-        urls = JSON.parse(urlsLocalstorage)
-        if (!Array.isArray(urls)) urls = []
-    }
-    localStorage.setItem('urls', JSON.stringify([...urls, url]))
+    //save to localstorage only if user is not logged in
+    if (loginStatus === 'unauthenticated') localStorage.setItem('urls', JSON.stringify([...getUrlsLocalstorage(), url]))
 
     return url
 }
