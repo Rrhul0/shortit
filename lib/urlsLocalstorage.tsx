@@ -1,6 +1,6 @@
 import { UrlWithPaths } from '../components/contexts/URLsContext'
 
-const getUrlsLocalstorage = () => {
+export const getUrlsLocalstorage = () => {
     const urlsLocalstorage = localStorage.getItem('urls')
     let urls: UrlWithPaths[] = []
     if (urlsLocalstorage) {
@@ -10,4 +10,7 @@ const getUrlsLocalstorage = () => {
     return urls
 }
 
-export default getUrlsLocalstorage
+export const setUrlsLocalstorage: (urls: UrlWithPaths) => void = urls => {
+    const urlsLocalstorage = getUrlsLocalstorage()
+    localStorage.setItem('urls', JSON.stringify([...urlsLocalstorage, urls]))
+}

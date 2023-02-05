@@ -6,15 +6,11 @@ import { URLsContext, UrlWithPaths } from '../components/contexts/URLsContext'
 import Footer from '../components/Footer'
 import { SessionProvider } from 'next-auth/react'
 import '../styles/global.css'
-import getUrlsLocalstorage from '../lib/getUrlsLocalstorage'
+import Header from '../components/Header'
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [urls, setUrls] = useState<UrlWithPaths[]>([])
     const [error, setError] = useState<Error | null>(null)
-
-    useEffect(() => {
-        getUrls().then(setUrls)
-    }, [])
 
     //remove error after 10 seconds
     useEffect(() => {
@@ -48,18 +44,4 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
             </SessionProvider>
         </>
     )
-}
-
-async function getUrls() {
-    //if user is not logged in then
-    //urls must stored in localstorege
-    let urls = getUrlsLocalstorage()
-
-    //if user is logged in
-    if (urls.length === 0) {
-        //fetch from user account
-        const urlsRes = await fetch('/api/get-urls')
-        urls = await urlsRes.json()
-    }
-    return urls
 }

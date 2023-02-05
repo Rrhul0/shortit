@@ -33,5 +33,5 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         include: { paths: {} },
     })
 
-    res.status(201).json(url)
+    res.status(200).json(url)
 }
