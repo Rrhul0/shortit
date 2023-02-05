@@ -30,7 +30,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
             <SessionProvider session={session}>
                 <ErrorContext.Provider value={{ error, setError }}>
                     <URLsContext.Provider value={{ urls, setUrls }}>
-                        <main className='grid grid-cols-1 grid-rows-[1fr] h-screen w-screen '>
+                        <main className='grid grid-cols-1 grid-rows-[40px_1fr] h-screen w-screen '>
+                            <Header />
                             <Component {...pageProps} />
                             <Footer />
                         </main>
