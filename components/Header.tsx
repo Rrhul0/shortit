@@ -1,5 +1,4 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
 
@@ -55,6 +54,7 @@ export default function Header() {
                                 onClick={e => {
                                     e.preventDefault()
                                     signOut()
+                                    localStorage.clear()
                                 }}
                                 className='bg-purple-100 rounded-lg text-xl hover:bg-purple-200 transition-all duration-500'
                             >

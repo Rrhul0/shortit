@@ -6,12 +6,13 @@ import { getUrlsLocalstorage } from '../lib/urlsLocalstorage'
 import { URLsContext } from '../components/contexts/URLsContext'
 
 export default function Home() {
-    const { setUrls, urls } = useContext(URLsContext)
+    const { setUrls } = useContext(URLsContext)
+    const { status } = useSession()
     const [processing, setProcessing] = useState<string | null>(null)
 
     useEffect(() => {
-        getUrls().then(setUrls)
-    }, [setUrls])
+        getUrls(status).then(setUrls)
+    }, [setUrls, status])
 
     return (
         <div className='flex flex-col items-center gap-6 py-4'>
@@ -22,8 +23,10 @@ export default function Home() {
     )
 }
 
-async function getUrls() {
+async function getUrls(status: 'authenticated' | 'loading' | 'unauthenticated') {
     let urls = getUrlsLocalstorage()
+
+    if (status !== 'authenticated') return []
 
     const urlsRes = await fetch('/api/get-urls')
     if (urlsRes.status === 200) {
