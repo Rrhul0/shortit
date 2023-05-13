@@ -6,7 +6,7 @@ import { getUrlsLocalstorage } from '../lib/urlsLocalstorage'
 import { URLsContext } from '../components/contexts/URLsContext'
 
 export default function Home() {
-    const { setUrls } = useContext(URLsContext)
+    const { setUrls, urls } = useContext(URLsContext)
     const [processing, setProcessing] = useState<string | null>(null)
 
     useEffect(() => {
@@ -14,11 +14,7 @@ export default function Home() {
     }, [setUrls])
 
     return (
-        <div className='flex flex-col items-center gap-6'>
-            <h1 className='font-extrabold text-fuchsia-700 text-5xl text-center drop-shadow-lg'>
-                Create and Manage Short URLs
-            </h1>
-
+        <div className='flex flex-col items-center gap-6 py-4'>
             <CreateUrlForm setProcessing={setProcessing} />
 
             <ShowAllUrls processing={processing} />

@@ -10,7 +10,10 @@ export default function ShowUrls({ urlIndex, url }: { url: UrlWithPaths; urlInde
     const paths = url.paths
 
     return (
-        <li key={url.id} className='border rounded-lg px-3 py-2 shadow-xl flex-grow'>
+        <li
+            key={url.id}
+            className='border rounded-lg px-3 py-2 shadow-xl flex-grow backdrop-blur-lg bg-white bg-opacity-50'
+        >
             <div className='p-2 text-xl font-semibold'>
                 <a
                     href={url.to_url}

@@ -26,11 +26,12 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                     content='A fully featured URL Shortner that can managed your shorted URL efficiently.'
                 />
                 <meta property='og:title' content='ShortIt: A Fully Featured URL Shortner' key='title' />
+                <meta name='referrer' content='no-referrer' />
             </Head>
             <SessionProvider session={session}>
                 <ErrorContext.Provider value={{ error, setError }}>
                     <URLsContext.Provider value={{ urls, setUrls }}>
-                        <main className='grid grid-cols-1 grid-rows-[40px_1fr] h-screen w-screen '>
+                        <main className='grid grid-cols-1 grid-rows-[75px_1fr] min-h-screen max-h-full w-full bg-[#28282d]'>
                             <Header />
                             <Component {...pageProps} />
                             <Footer />
