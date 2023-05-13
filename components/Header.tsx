@@ -44,7 +44,7 @@ export default function Header() {
                             <div className='text-2xl font-semibold text-purple-600'>{data?.user?.name?.charAt(0)}</div>
                         )}
                         <div
-                            className={`absolute w-80 h-24 z-50 backdrop-blur-sm  top-12 right-2 bg-slate-400 bg-opacity-50 rounded-xl p-2 gap-2 flex flex-col ${
+                            className={`absolute px-3 py-2 z-50 backdrop-blur-sm  top-16 right-2 bg-slate-400 bg-opacity-50 rounded-xl gap-2 flex flex-col ${
                                 showMenu ? ' ' : 'hidden'
                             }`}
                         >
@@ -56,10 +56,9 @@ export default function Header() {
                                     e.preventDefault()
                                     signOut()
                                 }}
-                                style={{ fontSize: '2rem' }}
-                                className='bg-purple-100 rounded-lg'
+                                className='bg-purple-100 rounded-lg text-xl hover:bg-purple-200 transition-all duration-500'
                             >
-                                LogOut
+                                Log Out
                             </Link>
                         </div>
                     </button>

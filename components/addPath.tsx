@@ -1,7 +1,7 @@
 import { Path } from '@prisma/client'
 import { useSession } from 'next-auth/react'
 import { Dispatch, FormEvent, RefObject, SetStateAction, useContext, useState } from 'react'
-import getUrlsLocalstorage from '../lib/urlsLocalstorage'
+import { getUrlsLocalstorage } from '../lib/urlsLocalstorage'
 import { ErrorContext } from './contexts/ErrorContext'
 import { URLsContext, UrlWithPaths } from './contexts/URLsContext'
 
