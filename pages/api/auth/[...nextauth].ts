@@ -19,15 +19,15 @@ export const authOptions: AuthOptions = {
         // ...add more providers here
     ],
     callbacks: {
-        session: async ({ session, token }) => {
-            if (session?.user && token.sub) {
-                session.user.id = token.sub
+        session: async ({ session, user }) => {
+            if (session?.user) {
+                session.user.id = user.id
             }
             return session
         },
     },
     session: {
-        strategy: 'jwt',
+        strategy: 'database',
     },
 }
 
