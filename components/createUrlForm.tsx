@@ -34,7 +34,7 @@ const CreateUrlForm = ({ setProcessing }: { setProcessing: Dispatch<SetStateActi
             <input
                 placeholder='Your large URL'
                 value={url}
-                className='px-3 rounded-lg md:w-1/3 drop-shadow-lg bg-stone-100 border-2 border-stone-100 focus:border-violet-600 transition-colors hover:border-violet-400 focus:outline-none focus:bg-white'
+                className='px-3 rounded-lg w-3/5 sm:w-2/5 md:w-1/2 lg:w-2/5 drop-shadow-lg bg-stone-100 border-2 border-stone-100 focus:border-violet-600 transition-colors hover:border-violet-400 focus:outline-none focus:bg-white'
                 onChange={e => setUrl(e.currentTarget.value)}
             />
             <button

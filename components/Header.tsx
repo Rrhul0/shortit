@@ -7,9 +7,9 @@ export default function Header() {
     const [showMenu, setShowMenu] = useState(false)
 
     return (
-        <header className='relative flex items-center justify-between px-8 bg-[#151517]'>
-            <h1 className='font-extrabold text-[#E5E2E1] text-4xl text-center drop-shadow-lg'>
-                ShortIt : <span className='font-bold text-2xl'>Create and Manage Short URLs</span>
+        <header className='relative flex items-center justify-between px-3 sm:px-4 lg:px-8 bg-[#151517]'>
+            <h1 className='font-extrabold text-primary text-4xl drop-shadow-lg flex flex-col sm:flex-row items-baseline sm:gap-2'>
+                ShortIt
             </h1>
             <div>
                 {!data?.user ? (
@@ -40,14 +40,16 @@ export default function Header() {
                                 style={{ backgroundImage: `url('${data.user.image}')` }}
                             ></span>
                         ) : (
-                            <div className='text-2xl font-semibold text-purple-600'>{data?.user?.name?.charAt(0)}</div>
+                            <div className='text-2xl font-semibold text-purple-600'>
+                                {data?.user?.email?.charAt(0).toUpperCase()}
+                            </div>
                         )}
                         <div
                             className={`absolute px-3 py-2 z-50 backdrop-blur-sm  top-16 right-2 bg-slate-400 bg-opacity-50 rounded-xl gap-2 flex flex-col ${
                                 showMenu ? ' ' : 'hidden'
                             }`}
                         >
-                            <strong>{data.user.name}</strong>
+                            <strong>{data.user.name || data.user.email?.split('@')[0]}</strong>
                             <small>{data.user.email}</small>
                             <Link
                                 href='/api/auth/signout'

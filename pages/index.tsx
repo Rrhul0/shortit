@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react'
 import CreateUrlForm from '../components/createUrlForm'
 import ShowAllUrls from '../components/ShowAllUrls'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { getUrlsLocalstorage } from '../lib/urlsLocalstorage'
 import { URLsContext } from '../components/contexts/URLsContext'
 
@@ -16,6 +16,10 @@ export default function Home() {
 
     return (
         <div className='flex flex-col items-center gap-6 py-4'>
+            <h2 className='font-bold sm:text-xl md:text-2xl text-center text-primary'>
+                Create short URLs for your large URLs and manage them
+            </h2>
+
             <CreateUrlForm setProcessing={setProcessing} />
 
             <ShowAllUrls processing={processing} />
@@ -29,7 +33,7 @@ async function getUrls(status: 'authenticated' | 'loading' | 'unauthenticated') 
     if (status !== 'authenticated') return []
 
     const urlsRes = await fetch('/api/get-urls')
-    if (urlsRes.status === 200) {
+    if (urlsRes.ok) {
         urls = await urlsRes.json()
         localStorage.setItem('urls', JSON.stringify(urls))
     }
