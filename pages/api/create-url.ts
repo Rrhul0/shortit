@@ -2,6 +2,8 @@ import { Session } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { UrlWithPaths } from '../../components/contexts/URLsContext'
 import prisma from '../../lib/prisma'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './auth/[...nextauth]'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<UrlWithPaths>) {
     if (req.method !== 'POST') {
@@ -9,19 +11,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         return
     }
 
-    const sessionToken = req.cookies['next-auth.session-token']
+    const to_url = JSON.parse(req.body).url
+    if (!to_url || typeof to_url !== 'string') {
+        res.status(400).end('url not found in body to shorten it')
+        return
+    }
 
-    const to_url: string = JSON.parse(req.body).url
+    const session = await getServerSession(req, res, authOptions)
+    const userId = session?.user?.id
 
-    //getuserId
-    let session: Session | null
-    if (!sessionToken) session = null
-    else
-        session = await prisma.session.findUnique({
-            where: { sessionToken },
-            include: { user: {} },
-        })
-    const userId = session?.userId
+    //if user id not found means user is not logged in
+    //then create an anonymous short url
 
     const url = await prisma.url.create({
         data: { to_url, userId },
