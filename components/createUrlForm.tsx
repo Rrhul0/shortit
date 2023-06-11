@@ -39,8 +39,7 @@ const CreateUrlForm = ({ setProcessing }: { setProcessing: Dispatch<SetStateActi
             />
             <button
                 type='submit'
-                className='transition-all text-white tracking-wider drop-shadow-lg bg-violet-500 rounded-lg px-3 py-2 hover:bg-violet-600 active:shadow-inner'
-            >
+                className='transition-all text-white tracking-wider drop-shadow-lg bg-violet-500 rounded-lg px-3 py-2 hover:bg-violet-600 active:shadow-inner'>
                 Short It
             </button>
         </form>
