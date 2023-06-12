@@ -1,5 +1,5 @@
 import { UrlWithPaths } from '../../app/beta/page'
-import AddPath from './addPath'
+import AddPathClient from './addPathClient'
 import ShowPaths from './showPaths'
 
 export default function ShowUrls({
@@ -41,7 +41,7 @@ export default function ShowUrls({
 					  ))
 					: null}
 			</ul>
-			<AddPath urlId={url.id} />
+			<AddPathClient urlId={url.id} />
 		</li>
 	)
 }
