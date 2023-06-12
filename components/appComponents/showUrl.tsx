@@ -44,7 +44,7 @@ export default function ShowUrls({
 			</ul>
 			<AddPath urlId={url.id} /> */}
 			<AddPathOptimistic
-				paths={paths}
+				paths={paths.map(path => path.path)}
 				urlId={url.id}
 			/>
 		</li>

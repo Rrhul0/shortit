@@ -1,50 +1,46 @@
 'use client'
-import { Path } from '@prisma/client'
 import { experimental_useOptimistic as useOptimistic } from 'react'
 
 import React from 'react'
 import CopyUrl from './copyUrl'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../../pages/api/auth/[...nextauth]'
-import prisma from '../../lib/prisma'
-import { revalidatePath } from 'next/cache'
 import { submitAction } from '../../lib/submitPathAction'
 
-export default async function AddPathOptimistic({
+export default function AddPathOptimistic({
 	paths,
 	urlId
 }: {
-	paths: any
+	paths: string[]
 	urlId: number
 }) {
 	const [optimisticPaths, addOptimisticPath] = useOptimistic(
 		paths,
-		(state, newPath) => [...state, { path: newPath, sending: true }]
+		(state, newPath: string) => [...state, newPath]
 	)
 
 	return (
 		<>
-			{optimisticPaths.map(m => (
-				<li
+			{optimisticPaths.map(path => (
+				<div
 					className='group relative'
-					key={m.path}
+					key={path}
 				>
 					<div className='bg-blue-300 bg-opacity-30 group-hover:blur-[1.5px] text-blue-700 transition-all px-2 py-1 rounded-xl'>
-						{m.path}
-						{m.sending ? 'sending' : ''}
+						{path}
 					</div>
-					<CopyUrl path={m.path} />
-				</li>
+					<CopyUrl path={path} />
+
+					{/*TODO: add share and delete or edit button */}
+				</div>
 			))}
 			<form
-				action={e => {
+				action={async e => {
 					const newPath = e.get('path') as string
 					//can not be empty path
 					if (!newPath) return
 
 					const pathWithoutSpaces = newPath.replaceAll(' ', '-')
 					addOptimisticPath(pathWithoutSpaces)
-					submitAction(pathWithoutSpaces, urlId)
+					await submitAction(pathWithoutSpaces, urlId)
 				}}
 				className='flex rounded-md '
 			>
