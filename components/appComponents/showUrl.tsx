@@ -1,5 +1,6 @@
 import { UrlWithPaths } from '../../app/beta/page'
 import AddPath from './addPath'
+import AddPathOptimistic from './addPathOptimistic'
 import ShowPaths from './showPaths'
 
 export default function ShowUrls({
@@ -29,7 +30,7 @@ export default function ShowUrls({
 				{/*TODO: add delete or edit url button */}
 			</div>
 
-			<ul className='border-t flex flex-wrap gap-x-2 gap-y-3 items-stretch py-2.5 '>
+			{/* <ul className='border-t flex flex-wrap gap-x-2 gap-y-3 items-stretch py-2.5 '>
 				<ShowPaths path={hostname + url.id} />
 
 				{paths.length
@@ -41,7 +42,11 @@ export default function ShowUrls({
 					  ))
 					: null}
 			</ul>
-			<AddPath urlId={url.id} />
+			<AddPath urlId={url.id} /> */}
+			<AddPathOptimistic
+				paths={paths}
+				urlId={url.id}
+			/>
 		</li>
 	)
 }
