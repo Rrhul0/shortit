@@ -1,3 +1,4 @@
+import Header from '../components/appComponents/Header'
 import '../styles/global.css'
 import { Inter } from 'next/font/google'
 
@@ -19,7 +20,12 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang='en'>
-			<body className={inter.className}>{children}</body>
+			<body className={inter.className}>
+				<main className='grid grid-cols-1 grid-rows-[75px_1fr] min-h-screen max-h-full w-full bg-[#28282d]'>
+					<Header />
+					{children}
+				</main>
+			</body>
 		</html>
 	)
 }
