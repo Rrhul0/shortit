@@ -2,15 +2,8 @@ import { UrlWithPaths } from '../../app/beta/page'
 import AddPathClient from './addPathClient'
 import ShowPaths from './showPaths'
 
-export default function ShowUrls({
-	urlIndex,
-	url
-}: {
-	url: UrlWithPaths
-	urlIndex: number
-}) {
+export default function ShowUrls({ url }: { url: UrlWithPaths }) {
 	const paths = url.paths
-	const hostname = process.env.NEXTAUTH_URL + '/'
 
 	return (
 		<li
@@ -30,13 +23,13 @@ export default function ShowUrls({
 			</div>
 
 			<ul className='border-t flex flex-wrap gap-x-2 gap-y-3 items-stretch py-2.5 '>
-				<ShowPaths path={hostname + url.id} />
+				<ShowPaths path={url.id} />
 
 				{paths.length
 					? paths.map(path => (
 							<ShowPaths
 								key={path.id}
-								path={hostname + path.path}
+								path={path.path}
 							/>
 					  ))
 					: null}
