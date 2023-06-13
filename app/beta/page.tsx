@@ -3,6 +3,7 @@ import { authOptions } from '../../pages/api/auth/[...nextauth]'
 import prisma from '../../lib/prisma'
 import { Path, Url } from '@prisma/client'
 import ShowAllUrls from '../../components/appComponents/showUrls'
+import CreateUrlForm from '../../components/appComponents/createUrlForm'
 
 export interface UrlWithPaths extends Url {
 	paths: Path[]
@@ -26,6 +27,7 @@ export default async function page() {
 			<h2 className='font-bold sm:text-xl md:text-2xl text-center text-primary'>
 				Create short URLs for your large URLs and manage them
 			</h2>
+			<CreateUrlForm userId={user?.id} />
 			{urls ? <ShowAllUrls urls={urls} /> : null}
 		</div>
 	)
